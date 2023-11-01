@@ -89,7 +89,7 @@ Sign up now and land your dream job</p>
                             )}
                         </Formik>
                         <p className='text-center pt-5'>Don't have an account yet?  
-                            <span onClick={()=> navigateTo('/sign-up')} className='text-primary cursor-pointer'> Sign up now</span> <br />
+                            <span onClick={()=> navigateTo('/register')} className='text-primary cursor-pointer'> Sign up now</span> <br />
                             <span onClick={()=> navigateTo('/forgot-password')} 
                             className='text-center text-red-500 cursor-pointer border-b'>forgot password?  
                         </span>

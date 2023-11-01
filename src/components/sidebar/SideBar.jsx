@@ -20,7 +20,7 @@ const SideBar = () => {
   const handleSignOut = (e) => {
       e.preventDefault();
       tokenService.removeUser();
-      navigateTo('/');
+      navigateTo('/login');
       return;
   };
   const navItems = [
