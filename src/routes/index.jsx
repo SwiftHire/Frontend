@@ -1,0 +1,1 @@
+export { dafault as Home } from './PageR'

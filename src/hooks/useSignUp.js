@@ -1,12 +1,13 @@
 import usersApi from '../services/usersApi';
 
 export function useSignUp() {
-    return async ({ name, email, password }) => {
+    return async ({ name, email, password, userType }) => {
         try {
             const requestBody = {
                 name,
                 email,
                 password,
+                userType
             };
             const validateStatus = () => true;
             const { status, data } =

@@ -1,3 +1,5 @@
-export { default as ResumeCards } from './ResumeCards';
-export { default as ResumeStepsCard } from './ResumeStepsCard';
-export { default as CraftingTypeCards } from './CraftingTypeCards';
+
+export { default as EmployerJobCard } from './EmployerJobCard';
+export { default as CandidatesCard } from './CandidatesCard';
+export { default as ListAvailableJobsCard } from './ListAvailableJobsCard';
+export { default as ProfileCard } from './ProfileCard';
