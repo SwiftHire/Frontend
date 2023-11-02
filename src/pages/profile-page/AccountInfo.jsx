@@ -1,161 +1,283 @@
-import React, { useEffect, useState } from 'react'; 
-import { useNavigate } from 'react-router';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import tokenService from "../../services/token.service";
+import userIcon from "../../assets/png/user-icon.png";
+import { useUserPlanContext } from "../../contexts/UserPlansContext";
 
-import tokenService from '../../services/token.service';
-// import { useUserCredits } from '../../hooks/useUserCredits';
-// import planService from '../../services/plan.service';
-import { GiTwoCoins } from 'react-icons/gi';
-import userIcon from '../../assets/png/user-icon.png';
-import { useUserPlanContext } from '../../contexts/UserPlansContext';
-
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Button from "@mui/material/Button";
+import { FileUploader } from "react-drag-drop-files";
 const AccountInfo = () => {
+  const user = tokenService.getUser();
+  const { updateUserPlans, userPlans } = useUserPlanContext();
+  useEffect(() => {
+    updateUserPlans();
+  }, [userPlans]);
 
-    const user = tokenService.getUser();
-    // const [userPlans, setUserPlans] = useState(planService.getPlan());
-    const { updateUserPlans, userPlans } = useUserPlanContext();
+  const fileTypes = ["PDF", "DOC", "DOCX"];
+  const [file, setFile] = useState(null);
+  const handleChange = (file) => {
+    setFile(file);
+  };
+  return (
+    <div className="w-full md:w-[80vw]">
+      <div
+        className="h-[10rem] w-full bg-gradient-to-r 
+            from-indigo-500 via-purple-500 to-primary py-5 rounded-5 shadow-square"
+      >
+        <h3 className="font-bold text-[2rem] text-body text-center">
+          {user.name}
+        </h3>
+      </div>
+      <div className="grid">
+        <img
+          src={userIcon}
+          alt=""
+          className="shadow-secondary -translate-y-10 border border-4 rounded-full"
+        />
 
+        <Typography variant="h6" gutterBottom>
+          Contact Information
+        </Typography>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              id="firstName"
+              name="firstName"
+              label="First name"
+              fullWidth
+              autoComplete="given-name"
+              variant="standard"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              id="lastName"
+              name="lastName"
+              label="Last name"
+              fullWidth
+              autoComplete="family-name"
+              variant="standard"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              id="phoneNumber"
+              name="phoneNumber"
+              label="Phone Number"
+              type="number"
+              fullWidth
+              autoComplete="given-name"
+              variant="standard"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              id="email"
+              name="email"
+              label="Email"
+              type="email"
+              fullWidth
+              autoComplete="given-name"
+              variant="standard"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              id="gender"
+              name="gender"
+              label="Gender"
+              fullWidth
+              autoComplete="given-name"
+              variant="standard"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              id="ethnicity"
+              name="ethnicity"
+              label="Ethnicity"
+              fullWidth
+              autoComplete="given-name"
+              variant="standard"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              id="address1"
+              name="address1"
+              label="Address line 1"
+              fullWidth
+              autoComplete="shipping address-line1"
+              variant="standard"
+            />
+          </Grid>
 
-    const navigateTo = useNavigate();
-    // gets only valid credits (grouped by plan in the array field "credits"), either from the last 30 days or from the On Demand plan, which is valid forever
-    // const getUserCredits = useUserCredits();
+          <Grid item xs={12}>
+            <TextField
+              id="address2"
+              name="address2"
+              label="Address line 2"
+              fullWidth
+              autoComplete="shipping address-line2"
+              variant="standard"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              id="city"
+              name="city"
+              label="City"
+              fullWidth
+              autoComplete="shipping address-level2"
+              variant="standard"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="state"
+              name="state"
+              label="State/Province/Region"
+              fullWidth
+              variant="standard"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              id="zip"
+              name="zip"
+              label="Zip / Postal code"
+              fullWidth
+              autoComplete="shipping postal-code"
+              variant="standard"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              id="country"
+              name="country"
+              label="Country"
+              fullWidth
+              autoComplete="shipping country"
+              variant="standard"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={
+                <Checkbox color="secondary" name="saveAddress" value="yes" />
+              }
+              label="Use this address for payment details"
+            />
+          </Grid>
+        </Grid>
+        <Typography variant="h6" gutterBottom sx={{ mt: 5 }}>
+          Work Information
+        </Typography>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              id="languages"
+              name="languages"
+              label="Languages"
+              type="languages"
+              fullWidth
+              autoComplete="given-name"
+              variant="standard"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              id="skills"
+              name="skills"
+              label="Skills"
+              fullWidth
+              autoComplete="given-name"
+              variant="standard"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="standard-multiline-static"
+              label="Work history"
+              multiline
+              rows={10}
+              fullWidth
+              variant="standard"
+              placeholder={
+                "Company name, company location, work period, your role"
+              }
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="standard-multiline-static"
+              label="Education"
+              multiline
+              rows={10}
+              fullWidth
+              variant="standard"
+              placeholder={
+                "Education level, University name, Related courses taken"
+              }
+            />
+          </Grid>
+        </Grid>
+        <Typography variant="h6" gutterBottom sx={{ mt: 5 }}>
+          Resume:
+        </Typography>
+        <Grid container spacing={3}>
+          <div className="uploadFile m-[1em] mt-[2em]">
+            <FileUploader
+              handleChange={handleChange}
+              name="file"
+              types={fileTypes}
+              dropMessageStyle={{ backgroundColor: "light grey" }}
+            />
+            <p>{file && `File name: ${file.name}`}</p>
+          </div>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="links"
+              label="Additional links: "
+              fullWidth
+              variant="standard"
+            />
+          </Grid>
+        </Grid>
+        {/* <Button disabled={false} size="large" variant="filledTonal"></Button> */}
 
-    // if (!user?.email) {
-    //     navigateTo('/sign-in');
-    //     return;
-    // }
-    
-    // useEffect(() => {
-    //     const setPlans = async () => {
-    //         const { status, data: userCredits } = await getUserCredits();
-        
-    //         if (status === 200 && userCredits?.credits?.length) {
-    //             setUserPlans(userCredits.credits);
-    //             planService.setPlan(userCredits.credits);
-    //         }
-    //     };
-        
-    //     if (!userPlans?.length) {
-    //         setPlans();
-    //     }
-    // }, []);
-    
-    // const mapPlans = (userPlans) => userPlans.map((userPlan) => ({
-    //     title: userPlan.planName,
-    //     heading: userPlan.planType === 'recurring' ? 'Monthly Subscription' : 'One Time Purchase',
-    //     description: userPlan.planDescription,
-    //     image: userPlan.planImage,
-    //     details: [
-    //         {
-    //             title: 'Remaining credits',
-    //             description: userPlan.remainingCredits,
-    //         },
-    //         {
-    //             title: 'Total valid credits purchased',
-    //             description: userPlan.totalCredits,
-    //         },
-    //         {
-    //             title: 'Credits used',
-    //             description: userPlan.creditsUsed,
-    //         },
-    //         {
-    //             title: 'Last purchase date',
-    //             description: new Date(userPlan.lastPurchase).toLocaleDateString(),
-    //         },
-    //     ],
-    //     history: userPlan.recentGenerationsHistory?.map((history) => ({
-    //         title: `${new Date(history.generationDate).toLocaleDateString()}: ${history.generationType}`,
-    //         description: history.description,
-    //         details: `${history.totalCredits} credits used`,
-    //     })),
-    // }));
-
-
-    useEffect(()=>{
-        updateUserPlans();
-    },[userPlans]);
-
-    function formatDateTime(originalDateTime) {
-        const dateTime = new Date(originalDateTime);
-      
-        const year = dateTime.getFullYear();
-        const month = dateTime.toLocaleString("default", { month: "long" });
-        const day = dateTime.getDate();
-      
-        let hour = dateTime.getHours();
-        let minute = dateTime.getMinutes();
-      
-        const period = hour >= 12 ? "PM" : "AM";
-        hour = hour % 12 || 12; 
-      
-        minute = minute < 10 ? "0" + minute : minute;
-      
-        const formattedDateTime = `${month} ${day}, ${year} at ${hour}:${minute} ${period}`;
-      
-        return formattedDateTime;
-      }
-      
-      
-
-    return (
-        <div className='w-full md:w-[80vw]'>
-            <div className='h-[10rem] w-full bg-gradient-to-r 
-            from-indigo-500 via-purple-500 to-primary py-5 rounded-5 shadow-square'>
-                <h3 className='font-bold text-[2rem] text-body text-center'>{user.name}</h3>
-            </div>
-            <div className='grid grid-cols-1 md:grid-cols-3 gap-3 ml-10'>
-                <div className=''>
-                    <img src={userIcon} alt="" className='shadow-secondary -translate-y-10 border border-4 rounded-full' />
-                        <>
-                            <h3><b>current plan:</b> {userPlans[0]?.planName}</h3>
-                            <p>{userPlans[0]?.planDescription}</p>
-                        </>
-                </div>
-                <div className='mt-3 md:px-6'>
-                    {userPlans[0]?.recentGenerationsHistory.map((plan)=>(
-                        <div className='border-b border-primary' key={plan._id}>
-                            <h3 className='font-light text-sm shadow-square py-3 pl-3'>
-                                {plan.generationType}
-                            </h3>
-                            <h3 className='font-light text-sm shadow-square py-3 pl-3'>
-                                {plan.description}
-                            </h3>
-                            <h3 className='font-light text-sm shadow-square py-3 pl-3'>
-                                {formatDateTime(plan.generationDate)}
-                            </h3>
-                        </div>
-                    ))}
-                </div>
-                <div className=''>
-                    <div className='grid grid-cols-2 gap-4 mt-5'>
-                        <div className='border flex flex-col gap-2 justify-center items-center shadow-pill py-3'>
-                            <div className='flex items-center gap-1'><GiTwoCoins className='font-bold text-sm'/>
-                                <GiTwoCoins className='font-bold text-sm'/></div>
-                            <h3 className='font-medium text-sm text-center'>Total credits</h3>
-                            <h4 className='font-bold text-[1.5rem] text-primary'>{userPlans[0]?.totalCredits}</h4>
-                        </div>
-                        <div className='border flex flex-col gap-2 justify-center items-center shadow-pill py-3'>
-                            <div className='flex items-center gap-1'><GiTwoCoins className='font-bold text-sm'/>
-                                <GiTwoCoins className='font-bold text-sm'/></div>
-                            <h3 className='font-medium text-sm text-center'>credits used</h3>
-                            <h4 className='font-bold text-[1.5rem] text-primary'>{userPlans[0]?.creditsUsed}</h4>
-                        </div>
-                        <div className='border flex flex-col gap-2 justify-center items-center shadow-pill py-3'>
-                            <div className='flex items-center gap-1'><GiTwoCoins className='font-bold text-sm'/>
-                                <GiTwoCoins className='font-bold text-sm'/></div>
-                            <h3 className='font-medium text-sm text-center'>remaining credits</h3>
-                            <h4 className='font-bold text-[1.5rem] text-primary'>{userPlans[0]?.remainingCredits}</h4>
-                        </div>
-                        <div className='border flex flex-col gap-2 justify-center items-center shadow-pill py-3'>
-                            <div className='flex items-center gap-1'><GiTwoCoins className='font-bold text-sm'/>
-                                <GiTwoCoins className='font-bold text-sm'/></div>
-                            <h3 className='font-medium text-sm text-center'>last purchased</h3>
-                            <h4 className='font-bold text-xsm text-primary'>{formatDateTime(userPlans[0]?.lastPurchase)}</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div
+          className="h-[10em]"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Button variant="contained" className="w-[50em] h-[6em] pb-[5em]">
+            Update Profile
+          </Button>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default AccountInfo;
