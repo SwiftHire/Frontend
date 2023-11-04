@@ -36,7 +36,7 @@ const SideBar = () => {
     },
   ]
   return (
-    <div className='h-full bg-primary w-2/12 font-Montserrat'>
+    <div className='h-full bg-primary w-2/12 font-Montserrat fixed'>
       <div className='mt-10 px-5'>
         <h3 className='text-white flex items-center gap-3'><span><GiFlyingDagger /></span> SwiftHire</h3>
         <ul className='my-10'>

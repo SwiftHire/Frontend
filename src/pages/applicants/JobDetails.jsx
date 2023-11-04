@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useListAvailableJobs } from '../../hooks/useListAvailableJobs';
-import { ListAvailableJobsCard } from '../cards';
-
+import { useGetJobDetail } from '../../hooks/useGetJobDetail';
 import { useApplyJob } from '../../hooks/useApplyJob';
 
-const ListApplicantsJobs = () => {
-  const [jobs, setJobs] = useState(null);
-  const [loading, setLoading] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const availableJobs = useListAvailableJobs();
-  const applyForJob = useApplyJob();
+import { JobDetailCard } from '../../components/cards';
 
+const JobDetails = () => {
+  const [JobDetail, setJobDetail] = useState([])
+  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
+  const applyForJob = useApplyJob();
+  const getJobDetail = useGetJobDetail();
+  const { jobId }  = useParams()
 
 
   const handleApplyJob = async(jobId, userId)=>{
@@ -31,42 +32,36 @@ const ListApplicantsJobs = () => {
       }
   }
 
-
   useEffect(()=>{
-    async function getAvailableJobs(){
+    async function getJobDetails(){
         try {
-          setLoading(true);
-          const { status, data } = await availableJobs();
+          setLoading(false);
+          const { status, data } = await getJobDetail(jobId);
           if(status===200){
-            setJobs(data.jobs)
+            setJobDetail(data.job)
           }
+          console.log(data, status)
         } catch (error) {
           console.log(error);
         }finally{
           setLoading(false);
         }
     }
-    getAvailableJobs();
-  }, [])
+    getJobDetails();
+  }, [jobId])
 
   if(loading){
     return <h3>.. loading data</h3>
   }
   return (
-    <div className='mt-10  grid grid-cols-1 md:grid-cols-2 gap-5'>
-      {jobs && jobs.length===0 
-      ? <h3>No Jobs available</h3>
-      : (<>
-        {jobs && jobs?.map((job)=>(
-          <ListAvailableJobsCard 
-          job={job} 
-          handleApplyJob={handleApplyJob} 
-          isLoading={isLoading}
-          key={job._id}/>
-        ))}
-      </>)} 
+    <div className='w-[60vw] mt-10'>
+      <JobDetailCard 
+        JobDetail={JobDetail}
+        handleApplyJob={handleApplyJob}
+        isLoading={isLoading}
+      />
     </div>
   )
 }
 
-export default ListApplicantsJobs
+export default JobDetails

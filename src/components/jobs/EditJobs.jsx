@@ -1,36 +1,34 @@
 import React, { useState } from 'react';
-import { FaTimes } from 'react-icons/fa'
-import { useCreateJobs } from '../../hooks/useCreateJobs';
-import tokenService from '../../services/token.service';
+import { FaTimes } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import { useEditJob } from '../../hooks/useEditJob';
 
-const CreateJobs = ({ handleToggleCreateJob, getEmployerJobs }) => {
+
+const EditJobs = ({ handleToggleEditJob, selectedJob, getEmployerJobs }) => {
     const [loading, setLoading] = useState(false);
-    const [formData, setFormData] = useState({
-        title:"",
-        description:"",
-    })
+    const {_id, title, description } = selectedJob;
+    const EditJob = useEditJob()
+    const [formData, setFormData] = useState(Object.assign({}, {
+        title, description
+    }));
 
     const handleChange = (e)=>{
         const { name, value } = e.target;
         setFormData({ ...formData, [name]:value });
     }
 
-    const createJob = useCreateJobs();
-    const user = tokenService.getUser();
-
-    const handleSubmitJob = async()=>{
+    const handleSubmitEditJob = async()=>{
         const payload = {
             title:formData.title,
             description:formData.description,
-            userId:user.id
         }
         try {
             setLoading(true)
-            const { status, data } = await createJob(payload);
-            console.log(data, 'created')
-            if(status===201){
+            const { status, data } = await EditJob(_id, payload);
+            if(status===200){
+                toast.success(data.message);
                 getEmployerJobs();
-                handleToggleCreateJob();
+                handleToggleEditJob();
             }
         } catch (error) {
             console.log(error)
@@ -41,7 +39,7 @@ const CreateJobs = ({ handleToggleCreateJob, getEmployerJobs }) => {
   return (
     <div className='h-screen w-full fixed top-0 left-0 grid place-items-center bg-primary/70'>
         <div className='w-6/12 bg-white p-10 rounded-[0.5rem] relative'>
-            <span className='absolute top-5 right-5 cursor-pointer' onClick={handleToggleCreateJob}><FaTimes className='text-primary'/></span>
+            <span className='absolute top-5 right-5 cursor-pointer' onClick={handleToggleEditJob}><FaTimes className='text-primary'/></span>
             <div className='flex flex-col gap-2'>
                 <label htmlFor='title'>Enter Job Title</label>
                 <input 
@@ -66,10 +64,10 @@ const CreateJobs = ({ handleToggleCreateJob, getEmployerJobs }) => {
                     onChange={handleChange}
                 />
             </div>
-            <button onClick={handleSubmitJob}  className='bg-primary w-full rounded-[0.5rem] text-white py-2 mt-4'>{loading ? 'processing' : 'Create Job'}</button>
+            <button onClick={handleSubmitEditJob}  className='bg-primary w-full rounded-[0.5rem] text-white py-2 mt-4'>{loading ? 'processing' : 'Submit Changes'}</button>
         </div>
     </div>
   )
 }
 
-export default CreateJobs
+export default EditJobs

@@ -38,7 +38,7 @@ module.exports = {
         extend: {
             colors: {
                 body: "#FBFBFF",
-                primary: "#7E3AF2",
+                primary: "#16564B",
                 primary_faded: "#F4C6D3",
                 danger: "#BE1B34",
                 darkText: "#17141B",
