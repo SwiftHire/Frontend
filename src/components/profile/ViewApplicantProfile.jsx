@@ -6,7 +6,7 @@ import { FaTimes } from 'react-icons/fa';
 import { BsToggleOff, BsToggleOn } from 'react-icons/bs';
 import { ProfileCard } from '../cards';
 
-const ViewApplicantProfile = ({ handleShowProfile, selectedApplicant, jobId }) => {
+const ViewApplicantProfile = ({ handleShowProfile, selectedApplicant, jobId, getApplicants }) => {
     const [applicantProfile, setApplicantProfile] = useState(null);
     const [loading, setLoading] = useState(false);
     const [showApprovalButton, setShowApprovalButton] = useState(false);
@@ -23,7 +23,7 @@ const ViewApplicantProfile = ({ handleShowProfile, selectedApplicant, jobId }) =
         setShowApprovalButton(!showApprovalButton);
     }
 
-    console.log(selectedStatus, 'selectedStatus')
+    // console.log(selectedStatus, 'selectedStatus')
 
     const handleSelectStatus = async(status) => {
         let updatedStatus;
@@ -41,6 +41,8 @@ const ViewApplicantProfile = ({ handleShowProfile, selectedApplicant, jobId }) =
             const { status, data } = await manageApplicant(selectedApplicant?.user._id, jobId, updatedStatus);
             if(status===200){
                 toast.success(data.message);
+                getApplicants();
+                handleShowProfile();
             }
         } catch (error) {
             console.log(error);

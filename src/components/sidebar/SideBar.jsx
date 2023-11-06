@@ -40,8 +40,12 @@ const SideBar = () => {
       <div className='mt-10 px-5'>
         <h3 className='text-white flex items-center gap-3'><span><GiFlyingDagger /></span> SwiftHire</h3>
         <ul className='my-10'>
-          {navItems.map((item)=>(
-            <li className='flex items-center gap-4 my-3 text-[1.2rem] text-white font-medium'><span>{item.icon}</span> {item.name}</li>
+          {navItems.map((item, index)=>(
+            <li 
+              key={index}
+              className='flex items-center gap-4 my-3 text-[1.2rem] text-white font-medium'>
+              <span>{item.icon}</span> {item.name}
+            </li>
           ))}
         </ul>
         {/* <h3 className='text-white flex items-center gap-3'><span><AiOutlinePlus /></span> Create New Job</h3> */}

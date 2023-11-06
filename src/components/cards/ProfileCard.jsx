@@ -1,7 +1,8 @@
 import React from 'react';
-import tokenService from '../../services/token.service';
+import { toast } from 'react-toastify';
 import { BiPencil } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
+import tokenService from '../../services/token.service';
 import userAvtar from '../../assets/png/user-icon.png';
 
 const ProfileCard = ({ profileInfo }) => {
@@ -14,7 +15,10 @@ const ProfileCard = ({ profileInfo }) => {
 
     const handleVisitResumeURL = ()=>{
         const resumeUrl = profileInfo[0]?.resume;
-
+        if(!resumeUrl){
+            toast.error('This user has not added a resume yet');
+            return;
+        }
         if (resumeUrl) {
             window.open(resumeUrl, '_blank');
         }
@@ -57,7 +61,7 @@ const ProfileCard = ({ profileInfo }) => {
                     <h3 className='font-medium text-xsm border-b uppercase'>Experience</h3>
                     <div className='my-3 flex gap-3'>
                         {profileInfo && profileInfo[0]?.experience.map((experience)=>(
-                            <h3 className='text-xsm'>{experience?.title} | {experience?.company} | {experience?.years}</h3>
+                            <h3 key={experience._id} className='text-xsm'>{experience?.title} | {experience?.company} | {experience?.years}</h3>
                         ))}
                     </div>
                 </>
@@ -70,7 +74,7 @@ const ProfileCard = ({ profileInfo }) => {
                     <h3 className='font-medium text-xsm border-b uppercase'>Education</h3>
                     <div className='my-3 flex gap-3'>
                         {profileInfo && profileInfo[0]?.education.map((education)=>(
-                            <h3 className='text-xsm'>{education?.degree} | {education?.institution} | {education?.year}</h3>
+                            <h3 key={education._id} className='text-xsm'>{education?.degree} | {education?.institution} | {education?.year}</h3>
                         ))}
                     </div>
                 </>
@@ -83,8 +87,8 @@ const ProfileCard = ({ profileInfo }) => {
                     <>
                         <h3 className='font-medium text-xsm border-b uppercase'>Skills</h3>
                         <div className='my-3 flex gap-3'>
-                            {profileInfo && profileInfo[0]?.skills.map((skill)=>(
-                                <span className='bg-primary rounded-full px-4 py-1 text-xsm text-white'>{skill}</span>
+                            {profileInfo && profileInfo[0]?.skills.map((skill, index)=>(
+                                <span key={index} className='bg-primary rounded-full px-4 py-1 text-xsm text-white'>{skill}</span>
                             ))}
                         </div>
                     </>

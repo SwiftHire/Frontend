@@ -54,9 +54,15 @@ const ViewApplicants = () => {
   
   return (
     <>
+    {
+        jobApplicants && jobApplicants?.applicants.length > 0 &&(
+            <>
+                <h3 className='text-sm font-medium my-10'>View All Applicants for this Job</h3>
+                <button onClick={()=>navigateTo(-1)} className='flex items-center gap-2 mb-10'><span><MdArrowBackIosNew className='text-primary' /> </span> Back </button>
+            </>
+        )
+    }
         <div className='w-[60vw] font-Montserrat'>
-        <h3 className='text-sm font-medium my-10'>View All Applicants for this Job</h3>
-        <button onClick={()=>navigateTo(-1)} className='flex items-center gap-2 mb-10'><span><MdArrowBackIosNew className='text-primary' /> </span> Back </button>
             {jobApplicants && jobApplicants?.applicants.length > 0 ? (
                 jobApplicants && jobApplicants?.applicants.map((applicant)=>(
                     <CandidatesCard 
@@ -71,7 +77,7 @@ const ViewApplicants = () => {
                     <div className='h-screen grid grid-cols place-items-center'>
                         <div>
                             <button onClick={()=>navigateTo(-1)} className='flex items-center gap-2 mb-10'><span><MdArrowBackIosNew className='text-primary' /> </span> Back </button>
-                            <h2>No Applicants for this job</h2>
+                            <h2>No Applicants for this job yet</h2>
                         </div>
                     </div>
                 </>
@@ -83,6 +89,7 @@ const ViewApplicants = () => {
                 handleShowProfile={handleShowProfile}
                 selectedApplicant={selectedApplicant}
                 jobId={jobId}
+                getApplicants={getApplicants}
             />
         )}
     </>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import tokenService from '../../services/token.service';
 import { useListEmployerJobs } from '../../hooks/useListEmployerJobs';
 import { ListJobs, CreateJobs, EditJobs } from '../../components/jobs';
@@ -18,7 +18,21 @@ const EmployerDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
 
+  const [searchedJob, setSearchedJob] = useState({ job:'' });
 
+
+  const handleChange = (e)=>{
+    const { name, value } = e.target;
+    setSearchedJob({ ...searchedJob, [name]:value });
+  }
+  const handleSubmitSearch = ()=>{
+    const searchedJobs = employerJobs.filter((job)=>{
+      if(job.title.includes(searchedJob.job)){
+        return job;
+      }
+    });
+    setEmployerJobs(searchedJobs)
+  }
   const handleToggleCreateJob = ()=>{
     setShowCreateJob(!showCreateJob);
   }
@@ -44,6 +58,13 @@ const EmployerDashboard = () => {
       }
   }
 
+  useEffect(() => {
+    const searchedJobs = employerJobs.filter((job) => {
+      return job.title.toLowerCase().includes(searchedJob.job.toLowerCase());
+    });
+    setEmployerJobs(searchedJobs);
+  }, [searchedJob]);
+
     const renderTabs = ()=>{
         switch(selectedTab){
             case 'Jobs':
@@ -63,18 +84,32 @@ const EmployerDashboard = () => {
     }
   return (
     <div className='w-full md:w-[80vw] mt-[6rem] md:mt-[8rem] font-Montserrat'>
-        <div className='w-full md:w-7/12'>
-          <div className='flex items-center gap-10'>
-            <div>
-              search bar here
+        <div className='w-full md:w-10/12'>
+          {selectedTab === 'Jobs' && (
+            <div className='w-full flex items-center justify-between gap-10 mb-10'>
+              <div className='w-3/4 flex items-center'>
+                <input 
+                  type="text"
+                  name="job" 
+                  id="job"
+                  className='w-full outline-0 border py-2 px-3 text-gray-700 rounded-[8px]'
+                  placeholder='search job'
+                  value={searchedJob.job}
+                  onChange={handleChange}
+                />
+              <button
+              onClick={handleSubmitSearch} 
+              className='bg-primary text-white py-2 px-5 rounded-[8px]'>Search</button>
+              </div>
+              <div>
+                <button onClick={handleToggleCreateJob} className='flex items-center gap-3 text-primary border py-2 px-5 rounded-full'>
+                  <span><AiOutlinePlus className='text-primary' />
+                  </span> Create New Job
+                </button>
+              </div>
             </div>
-            <div>
-              <button onClick={handleToggleCreateJob} className='flex items-center gap-3 text-primary'>
-                <span><AiOutlinePlus className='text-primary' />
-                </span> Create New Job
-              </button>
-            </div>
-          </div>
+          )}
+          
             <ul className='flex items-center gap-7'>
                 {tabs.map((tab)=>(
                     <li 

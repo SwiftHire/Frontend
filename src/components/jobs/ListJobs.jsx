@@ -14,15 +14,26 @@ const ListJobs = ({ getEmployerJobs, loading, employerJobs, handleToggleEditJob,
     }
   return (
     <div className='grid grid-cols-1 md:grid-cols-2 gap-5 mt-10 font-Montserrat'>
-        {employerJobs && employerJobs.map((job)=>(
-            <EmployerJobCard 
-                job={job} 
-                getEmployerJobs={getEmployerJobs} 
-                handleToggleEditJob={handleToggleEditJob}
-                handleSelectedJob={handleSelectedJob}
-                key={job._id}
-            />
-        ))}
+        {
+            employerJobs ? (
+                <>
+                    {employerJobs && employerJobs.map((job)=>(
+                        <EmployerJobCard 
+                            job={job} 
+                            getEmployerJobs={getEmployerJobs} 
+                            handleToggleEditJob={handleToggleEditJob}
+                            handleSelectedJob={handleSelectedJob}
+                            key={job._id}
+                        />
+                    ))}
+                </>
+            ):(
+                <>
+                    <h3>No Jobs found</h3>
+                </>
+            )
+        }
+        
     </div>
   )
 }
