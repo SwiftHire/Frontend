@@ -327,7 +327,7 @@ const UpdateProfile = () => {
                 </div>
             </div>
         </div>
-        <button onClick={handleSubmitProfile}  className='bg-primary w-full rounded-[0.5rem] text-white py-2 mt-4'>{loading ? 'processing' : 'Create Profile'}</button>
+        <button onClick={handleSubmitProfile}  className='bg-primary w-full rounded-[0.5rem] text-white py-2 mt-4'>{loading ? 'processing' : 'Update Profile'}</button>
     </div>
   )
 }

@@ -19,6 +19,7 @@ const JobDetails = () => {
     try {
         setIsLoading(true);
         const { status, data } = await applyForJob(jobId, userId);
+        console.log(data)
         if(status===200){
           toast.success(data.message);
         }
@@ -40,7 +41,6 @@ const JobDetails = () => {
           if(status===200){
             setJobDetail(data.job)
           }
-          console.log(data, status)
         } catch (error) {
           console.log(error);
         }finally{
