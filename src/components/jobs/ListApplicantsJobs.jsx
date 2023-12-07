@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { IoSearchOutline } from "react-icons/io5";
 import { toast } from 'react-toastify';
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 import { useGetOwnProfile } from '../../hooks/useGetOwnProfile';
+import { useApplyJob } from '../../hooks/useApplyJob';
 import tokenService from '../../services/token.service';
 import { useListAvailableJobs } from '../../hooks/useListAvailableJobs';
 import { ListAvailableJobsCard } from '../cards';
+import { ApplicantsCardSkeleton } from '../page-skeletons';
 
-import { useApplyJob } from '../../hooks/useApplyJob';
 
 const ListApplicantsJobs = () => {
   const [jobs, setJobs] = useState(null);
@@ -20,6 +23,8 @@ const ListApplicantsJobs = () => {
   const getOwnProfile = useGetOwnProfile();
   const user = tokenService.getUser();
 
+  console.log(jobs, 'jobs ....');
+  console.log(profileInfo && profileInfo, 'profile ....');
 
 
   const handleChange = (e)=>{
@@ -27,7 +32,7 @@ const ListApplicantsJobs = () => {
     setJobFormData({ ...jobFormData, [name]:value })
   }
   const findJobMatches = ()=>{
-    const matchedJobs = jobs?.filter((job)=>{
+    const matchedJobs = jobs && jobs?.filter((job)=>{
       if(job?.title?.toLowerCase().includes(profileInfo[0]?.professionalTitle.toLowerCase())){
         return job
       }
@@ -38,6 +43,7 @@ const ListApplicantsJobs = () => {
   const searchJobs = ()=>{
     if(!jobFormData?.job){
       toast.error('field cannot be empty');
+      setJobMatches(jobMatches)
       return
     }
     const matchedJobs = jobs?.filter((job)=>{
@@ -87,13 +93,15 @@ const ListApplicantsJobs = () => {
     async function getAvailableJobs(){
         try {
           setLoading(true);
-          const { status, data } = await availableJobs();
-          if(status===200){
-            setJobs(data.jobs)
-          }
+          setTimeout(async () => {
+            const { status, data } = await availableJobs(user.id);
+            if (status === 200) {
+              setJobs(data.jobs);
+            }
+            setLoading(false);
+          }, 2000); 
         } catch (error) {
           console.log(error);
-        }finally{
           setLoading(false);
         }
     }
@@ -104,15 +112,9 @@ const ListApplicantsJobs = () => {
     findJobMatches();
   },[jobs, profileInfo])
 
-  if(loading){
-    return <h3>.. loading data</h3>
-  }
+  
   return (
     <div className='h-full mt-10'>
-      {jobMatches && jobMatches.length===0 
-      ? <h3>No Jobs available</h3>
-      : 
-      (
         <div className='w-full'>
           <div className='w-full h-[60px] bg-white my-5'>
             <div className='w-full h-full flex items-center justify-center gap-5 rounded-[0.5rem] px-10 relative'>
@@ -135,7 +137,7 @@ const ListApplicantsJobs = () => {
           </div>
           <div className='flex  gap-4'>
           <div className='h-full w-4/12 bg-white p-5'>
-            <h3 className='font-bold text-sm'>Job Titles</h3>
+            {/* <h3 className='font-bold text-sm'>Job Titles</h3>
             <ul className=''>
               <li className='flex items-center gap-4 mt-3'>
                 <input 
@@ -164,25 +166,36 @@ const ListApplicantsJobs = () => {
                 />
                 <h6>Devops Engineer</h6>
               </li>
-            </ul>
+            </ul> */}
           </div>
           <div className='w-8/12'>
             <div className='py-10'>
               <h3>Showing <span className='text-primary font-bold'>{jobMatches && jobMatches.length}</span> jobs according to your profile</h3>
             </div>
             <div className='h-full w-full grid grid-cols-1 md:grid-cols-1 gap-3'>
-                  {jobMatches && jobMatches?.map((job)=>(
-                  <ListAvailableJobsCard 
-                  job={job} 
-                  handleApplyJob={handleApplyJob} 
-                  isLoading={isLoading}
-                  key={job._id}/>
-                ))}
+                  {loading 
+                  ? (<div>
+                      <ApplicantsCardSkeleton skeletons={jobs?.length} />
+                    </div>)
+                  : jobMatches && jobMatches.length === 0 ? (
+                    <h3 className='font-bold'>No Jobs available</h3>
+                  ): (
+                    <>
+                      {jobMatches && jobMatches?.map((job)=>(
+                          <ListAvailableJobsCard 
+                          job={job} 
+                          handleApplyJob={handleApplyJob} 
+                          isLoading={isLoading}
+                          key={job._id}/>
+                      ))}
+                    </>
+                  )
+                }
+                  
             </div>
           </div>
         </div>
         </div>
-      )} 
     </div>
   )
 }

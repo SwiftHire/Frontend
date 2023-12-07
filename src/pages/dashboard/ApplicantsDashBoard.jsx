@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { ListApplicantsJobs } from '../../components/jobs';
-import { ApplicantProfile } from '../../components/profile';
+import { ApplicantProfile, AppliedJobs } from '../../components/profile';
 import { Candidates } from '../../components/candidates';
 import { AiOutlinePlus } from 'react-icons/ai';
 
 
 
 const ApplicantsDashBoard = () => {
-  const tabs = ['Available Jobs', 'Profile']
+  const tabs = ['Available Jobs', 'Profile', 'Your Applied Jobs']
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const [showCreateJob, setShowCreateJob] = useState(false);
 
@@ -22,6 +22,8 @@ const ApplicantsDashBoard = () => {
                 return <ListApplicantsJobs/>
             case 'Profile':
                 return <ApplicantProfile />
+            case 'Your Applied Jobs':
+                return <AppliedJobs />
             default:
                 null
         }

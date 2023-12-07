@@ -8,7 +8,7 @@ import { AiOutlinePlus } from 'react-icons/ai';
 
 
 const EmployerDashboard = () => {
-  const tabs = ['Jobs', 'Profile']
+  const tabs = ['Jobs', '']
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const [showCreateJob, setShowCreateJob] = useState(false);
   const [showEditJob, setShowEditJob] = useState(false);
@@ -47,13 +47,15 @@ const EmployerDashboard = () => {
     const getEmployerJobs = async()=>{
       try {
           setLoading(true)
-          const { status, data } = await listEmployerJobs(user.id);
-          if(status===200){
-              setEmployerJobs(data.jobs)
-          }
+          setTimeout(async () => {
+            const { status, data } = await listEmployerJobs(user.id);
+            if (status === 200) {
+              setEmployerJobs(data.jobs);
+            }
+            setLoading(false);
+          }, 2000); 
       } catch (error) {
           console.log(error)
-      }finally{
           setLoading(false);
       }
   }

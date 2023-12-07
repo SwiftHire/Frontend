@@ -57,7 +57,7 @@ const ViewApplicants = () => {
     {
         jobApplicants && jobApplicants?.applicants.length > 0 &&(
             <>
-                <h3 className='text-sm font-medium my-10'>View All Applicants for this Job</h3>
+                <h3 className='text-sm font-medium my-10 font-Montserrat'>View All Applicants for this Job</h3>
                 <button onClick={()=>navigateTo(-1)} className='flex items-center gap-2 mb-10'><span><MdArrowBackIosNew className='text-primary' /> </span> Back </button>
             </>
         )

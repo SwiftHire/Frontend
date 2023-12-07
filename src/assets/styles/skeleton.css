@@ -1,0 +1,12 @@
+.skeleton {
+    display: inline-block;
+    background-color: #f0f0f0; /* Placeholder color */
+    border-radius: 3px; /* Adjust as needed */
+  }
+  
+  .skeleton-line {
+    height: 12px; /* Adjust as needed */
+    width: 100%; /* Takes full width */
+    margin-bottom: 8px; /* Adjust as needed */
+    border-radius: 4px; /* Adjust as needed */
+  }

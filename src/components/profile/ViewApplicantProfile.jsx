@@ -72,11 +72,11 @@ const ViewApplicantProfile = ({ handleShowProfile, selectedApplicant, jobId, get
         return <h3> loading data</h3>
       }
   return (
-    <div className='h-screen w-full fixed top-0 left-0 grid place-items-center bg-primary/70'>
-        <div className='w-7/12 bg-white p-10 rounded-[0.5rem] relative'>
+    <div className='h-screen w-full fixed top-0 left-0 grid place-items-center bg-primary/70 font-Montserrat'>
+        <div className='w-11/12 bg-white p-10 rounded-[0.5rem] relative'>
             <span className='absolute top-5 right-5 cursor-pointer' onClick={handleShowProfile}><FaTimes className='text-primary'/></span>
            <div className='flex gap-5'>
-                <div className='w-9/12'>
+                <div className=''>
                     <ProfileCard profileInfo={applicantProfile} />
                 </div>
                 <div className='w-3/12 '>

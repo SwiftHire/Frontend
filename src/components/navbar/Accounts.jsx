@@ -23,8 +23,8 @@ const Accounts = () => {
         <ul className='flex flex-col lg:flex-row items-center gap-5'>
             {user?.name ? <li onClick={handleSignOut} 
                 className='cursor-pointer hover:text-primary'>Sign out</li> : <Link to='/login'><li className='hover:text-primary'>Sign in</li></Link>}
-            {user?.name ? <Link to='resumai/start-crafting'>
-                <li className='bg-primary text-body px-10 py-2 rounded-[0.5rem] hover:bg-darkText'>Create</li>
+            {user?.name ? <Link to='/dashboard/user'>
+                <li className='bg-primary text-body px-10 py-2 rounded-[0.5rem] hover:bg-darkText'>dashboard</li>
             </Link>
                 : <Link to='/register'>
                     <li className='bg-primary text-body px-10 py-2 rounded-[0.5rem] hover:bg-darkText'>Sign up</li>

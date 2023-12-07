@@ -5,6 +5,7 @@ import { MdArrowBackIosNew } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import tokenService from '../../services/token.service';
 import { useCreateProfile } from '../../hooks/useCreateProfile';
+import { useUploadResume } from '../../hooks/useUploadResume';
 import { Button } from '../../components/button';
 
 const UpdateProfile = () => {
@@ -28,13 +29,12 @@ const UpdateProfile = () => {
         skills:'',
         
     }))
-
-    console.log(profileInfo)
-    
+ 
 
     const navigateTo = useNavigate();
     
     const createProfile = useCreateProfile();
+    const uploadResume = useUploadResume();
     const user = tokenService.getUser();
     
 
@@ -93,6 +93,11 @@ const UpdateProfile = () => {
 
     const handleSubmitProfile = async()=>{
 
+        if(!formData.resume && !file){
+            toast.error('You have not uploaded a resume');
+            return
+        }
+
         const payload = {
             userId:user.id,
             fullName:formData.fullName,
@@ -115,28 +120,11 @@ const UpdateProfile = () => {
             skills:skillsData,
         }
 
-        // const newFormData = new FormData();
-        // newFormData.append('userId', user.id);
-        // newFormData.append('education[0][degree]', formData.degree);
-        // newFormData.append('education[0][institution]', formData.institution);
-        // newFormData.append('education[0][year]', formData.year);
-        // newFormData.append('experience[0][title]', formData.title);
-        // newFormData.append('experience[0][company]', formData.company);
-        // newFormData.append('experience[0][years]', formData.years);
-        // newFormData.append('skills', skillsData);
-
         
-
-        // if (file) {
-        //     newFormData.append('resume', file);
-        // }
-
-        // for (const [key, value] of newFormData) {
-        //     console.log(`${key}:`, value);
-        //   }
        
         try {
             setLoading(true)
+            handleUploadResume();
             const { status, data } = await createProfile(payload);
             if(status===200){
                 toast.success(data.message);
@@ -150,6 +138,36 @@ const UpdateProfile = () => {
             setLoading(false)
         }
     }
+
+    const handleUploadResume = async()=>{
+        const newFormData = new FormData();
+        // newFormData.append('userId', user.id);
+        // newFormData.append('education[0][degree]', formData.degree);
+        // newFormData.append('education[0][institution]', formData.institution);
+        // newFormData.append('education[0][year]', formData.year);
+        // newFormData.append('experience[0][title]', formData.title);
+        // newFormData.append('experience[0][company]', formData.company);
+        // newFormData.append('experience[0][years]', formData.years);
+        // newFormData.append('skills', skillsData);
+
+        
+
+        if (file) {
+            newFormData.append('file', file);
+        }
+
+        // for (const [key, value] of newFormData) {
+        //     console.log('==================================================')
+        //     console.log(`${key}:`, value);
+        //   }
+        try {
+            const response = await uploadResume(user?.id, newFormData);
+            console.log(response, 'file res')
+        } catch (error) {
+            
+        }
+    }
+
   return (
     <div className='w-[65vw] my-10 font-Montserrat pb-[3rem]'>
         <div className=''>
@@ -284,19 +302,19 @@ const UpdateProfile = () => {
                 </div>
                 
                 <div>
-                    {/* <div 
-                        className='w-8/12 text-center border border-dashed border-primary p-10 flex flex-col justify-center items-center'
+                    <div 
+                        className='w- text-center border border-dashed border-primary p-10 flex flex-col justify-center items-center'
                         style={{ backgroundColor: isHovering ? '#f0f0f0' : 'white', }}
                         onDrop={handleDragDrop}
                         onDragOver={handleDragOver}
                         onDragLeave={handleDragLeave}>
                         <span className='text-center'><ImFileText2 className='w-12 h-12 text-primary' /></span>
                         {file ? <span className='text-xxsm font-normal mt-5 border px-2 py-1 rounded-full'>*** {file.name}</span>
-                            : <h3 className='text-sm font-normal mt-5'>{isHovering ? 'Drop file here' : 'Drag and drop your files here'}</h3>
+                            : <h3 className='text-sm font-normal mt-5'>{isHovering ? 'Drop file here' : 'Drag and drop your resume here'}</h3>
                         }
                     
                     </div>
-                    <div className='w-8/12'>
+                    <div className=''>
                         <input 
                             ref={fileRef}
                             name='resumeFile' 
@@ -307,11 +325,10 @@ const UpdateProfile = () => {
                             style={{ display: 'none' }}
                         />
                         <Button onClick={handleUploadButtonClick}>Upload from device</Button>  
-                    </div> */}
-                    <h3 className='my-5 font-medium'>Resume File URL</h3>
+                    </div>
+                    {/* <h3 className='my-5 font-medium'>Resume File URL</h3>
                     <div className='flex items-center'>
                         <div className='w-full'>
-                            {/* <label htmlFor='title'>Enter institution</label> */}
                             <input 
                                 name='resume'
                                 type='text'
@@ -323,7 +340,7 @@ const UpdateProfile = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

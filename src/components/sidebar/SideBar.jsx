@@ -24,16 +24,16 @@ const SideBar = () => {
       return;
   };
   const navItems = [
-    {
-      name:'Home',
-      url:'Jobs',
-      icon:<AiFillHome />
-    },
-    {
-      name:'Jobs',
-      url:'Jobs',
-      icon: <BsPersonWorkspace />
-    },
+    // {
+    //   name:'Home',
+    //   url:'Jobs',
+    //   icon:<AiFillHome />
+    // },
+    // {
+    //   name:'Jobs',
+    //   url:'Jobs',
+    //   icon: <BsPersonWorkspace />
+    // },
   ]
   return (
     <div className='h-full bg-primary w-2/12 font-Montserrat fixed'>

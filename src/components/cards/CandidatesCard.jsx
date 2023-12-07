@@ -12,12 +12,12 @@ const CandidatesCard = ({ applicant, handleShowProfile, handleSelectApplicant })
                     <span className='text-xsm'>Backend Developer</span>
                 </div>
             </li>
-            <li>2days ago</li>
+            <li>Today</li>
             <li>{applicant?.user.email}</li>
             <li 
             className='px-3 py-1 rounded-[0.5rem] text-white'
             style={{ 
-              backgroundColor:`${applicant?.status==='pending' ? 'yellow' : applicant?.status==='approved' ? 'green' : 'red'}`
+              backgroundColor:`${applicant?.status==='pending' ? '#F5BA13' : applicant?.status==='approved' ? 'green' : 'red'}`
              }}
             >{applicant?.status}</li>
             <li onClick={()=>{

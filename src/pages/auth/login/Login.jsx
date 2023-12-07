@@ -29,7 +29,7 @@ const Login = () => {
             <div className='h-full w-11/12 flex'>
                 <div className='w-1/2 bg-primary flex justify-center items-center flex-col'>
                     <div className='px-2 lg:px-10'>
-                        <h3 className='font-bold text-sm text-lg text-white'>SwiftHire</h3>
+                        <h3 className='font-bold text-lg text-white'>SwiftHire</h3>
                         <p className='text-white my-10 text-sm'>Join SwiftHire and unlock 
 endless career opportunities. 
 Sign up now and land your dream job</p>
@@ -90,9 +90,9 @@ Sign up now and land your dream job</p>
                         </Formik>
                         <p className='text-center pt-5'>Don't have an account yet?  
                             <span onClick={()=> navigateTo('/register')} className='text-primary cursor-pointer'> Sign up now</span> <br />
-                            <span onClick={()=> navigateTo('/forgot-password')} 
+                            {/* <span onClick={()=> navigateTo('/forgot-password')} 
                             className='text-center text-red-500 cursor-pointer border-b'>forgot password?  
-                        </span>
+                        </span> */}
                         </p>
                         
                     </div>

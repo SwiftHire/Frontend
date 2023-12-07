@@ -15,8 +15,14 @@ const Home = () => {
       <div className='font-Montserrat mt-[12rem]'>
           <div className='w-full px-5 md:px-0 md:w-8/12 m-auto'>
             <div>
-              <h3 className='text-sm md:text-xl text-center font-bold md:leading-[3.5rem] text-[#353535]'>The Ultimate Platform for Employers and Job Seekers to Connect</h3>
-              <p className='text-center my-10 text-sm'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque nulla numquam repellat consequatur saepe nam molestiae aspernatur atque eius! Possimus!</p>
+              <h3 className='text-sm md:text-xl text-center font-bold md:leading-[3.5rem] text-[#353535]'>
+                The Ultimate Platform for Employers and Job Seekers to Connect</h3>
+              <p className='text-center my-10 text-sm'>
+                        
+        SwiftHire offers a comprehensive platform facilitating seamless connections between employers and job seekers. 
+        Employers gain access to a diverse pool of talent through advanced search filters and candidate management tools. 
+        
+              </p>
               <div className='w-1/2 my-10 m-auto'>
                 <Button onClick={()=> navigateTo('/register')}>Get Started <BsArrowRight /></Button>
               </div>

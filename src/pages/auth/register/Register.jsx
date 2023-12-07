@@ -55,7 +55,7 @@ const Register = () => {
                 checked={selectedOption === 'employer'}
                 readOnly
               />
-              <h3 className='text-[1.5rem]'>I am An Employee</h3>
+              <h3 className='text-[1.5rem]'>I am An Employer</h3>
             </div>
           </div>
           <div className='px-5 mt-10'>
@@ -72,9 +72,9 @@ const Register = () => {
         </div>
         <p className='text-center pt-5'>Already have an account yet?  
             <span onClick={()=> navigateTo('/login')} className='text-primary cursor-pointer'> Sign in</span> <br />
-            <span onClick={()=> navigateTo('/forgot-password')} 
+            {/* <span onClick={()=> navigateTo('/forgot-password')} 
             className='text-center text-red-500 cursor-pointer border-b'>forgot password?  
-        </span>
+        </span> */}
         </p>
       </div>
     </div>

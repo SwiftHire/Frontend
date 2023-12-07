@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MdArrowBackIosNew } from 'react-icons/md';
+import { ImFileText2 } from 'react-icons/im';
 import { toast } from 'react-toastify';
 import tokenService from '../../services/token.service';
 import { useCreateProfile } from '../../hooks/useCreateProfile';
+import { useUploadResume } from '../../hooks/useUploadResume';
 import { Button } from '../../components/button';
 
 const CreateProfile = () => {
     const [loading, setLoading] = useState(false);
     const [skillsData, setSkillsData] = useState([]);
+    const [file, setFile] = useState(null);
+    const [isHovering, setIsHovering] = useState(false);
+    const fileRef = useRef();
     const [formData, setFormData] = useState({
         fullName:'',
         professionalTitle:'',
@@ -19,17 +24,59 @@ const CreateProfile = () => {
         institution:"",
         year: "",
         skills:'',
-        resume:''
+        // resume:''
     })
+
+    const requiredFields = [
+        'fullName',
+        'professionalTitle',
+        'title',
+        'company',
+        'years',
+        'degree',
+        'institution',
+        'year',
+        // 'skills',
+    ]
 
     const navigateTo = useNavigate();
     const createProfile = useCreateProfile();
+    const uploadResume = useUploadResume();
     const user = tokenService.getUser();
 
     const handleChange = (e)=>{
         const { name, value } = e.target;
         setFormData({ ...formData, [name]:value });
     }
+
+    const handleDragDrop = (e) => {
+        e.preventDefault();
+        setIsHovering(false);
+        const droppedFile = e.dataTransfer.files[0];
+        if (droppedFile && droppedFile.type === 'application/pdf') {
+          setFile(droppedFile);
+        } else {
+          toast.error('Only PDF files are allowed');
+        }
+      };
+    
+      const handleDragOver = (e) => {
+        e.preventDefault();
+        setIsHovering(true);
+      };
+    
+      const handleDragLeave = () => {
+        setIsHovering(false);
+      };
+    
+      const handleFileSelect = (e) => {
+        const selectedFile = e.target.files[0];
+        setFile(selectedFile);
+      };
+    
+      const handleUploadButtonClick = () => {
+        fileRef.current.click();
+      };
 
     
 
@@ -51,6 +98,17 @@ const CreateProfile = () => {
 
     const handleSubmitProfile = async()=>{
 
+        for(const field of requiredFields){
+            if(!formData[field]){
+                toast.error(`${field.replace(/_/g, ' ')} is required`);
+                return
+            }
+        }
+        
+        if(!file){
+            toast.error('You have not uploaded a resume');
+            return
+        }
         const payload = {
             userId:user.id,
             fullName:formData.fullName,
@@ -75,6 +133,7 @@ const CreateProfile = () => {
        
         try {
             setLoading(true)
+            handleUploadResume();
             const { status, data } = await createProfile(payload);
             if(status===201){
                 toast.success(data.message);
@@ -86,6 +145,19 @@ const CreateProfile = () => {
             console.log(error)
         }finally{
             setLoading(false)
+        }
+    }
+
+    const handleUploadResume = async()=>{
+        const newFormData = new FormData();
+        if (file) {
+            newFormData.append('file', file);
+        }
+        try {
+            const response = await uploadResume(user?.id, newFormData);
+            console.log(response, 'file res')
+        } catch (error) {
+            
         }
     }
   return (
@@ -221,10 +293,33 @@ const CreateProfile = () => {
                     </div>
                 </div>
                 <div>
-                    <h3 className='my-5 font-medium'>Resume File URL:</h3>
+                    <div 
+                        className='w- text-center border border-dashed border-primary p-10 flex flex-col justify-center items-center'
+                        style={{ backgroundColor: isHovering ? '#f0f0f0' : 'white', }}
+                        onDrop={handleDragDrop}
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}>
+                        <span className='text-center'><ImFileText2 className='w-12 h-12 text-primary' /></span>
+                        {file ? <span className='text-xxsm font-normal mt-5 border px-2 py-1 rounded-full'>*** {file.name}</span>
+                            : <h3 className='text-sm font-normal mt-5'>{isHovering ? 'Drop file here' : 'Drag and drop your resume here'}</h3>
+                        }
+                    
+                    </div>
+                    <div className=''>
+                        <input 
+                            ref={fileRef}
+                            name='resumeFile' 
+                            onChange={handleFileSelect}
+                            id="resumeFile"
+                            type="file"
+                            accept=".pdf"
+                            style={{ display: 'none' }}
+                        />
+                        <Button onClick={handleUploadButtonClick}>Upload from device</Button>  
+                    </div>
+                    {/* <h3 className='my-5 font-medium'>Resume File URL</h3>
                     <div className='flex items-center'>
                         <div className='w-full'>
-                            {/* <label htmlFor='title'>Enter institution</label> */}
                             <input 
                                 name='resume'
                                 type='text'
@@ -236,7 +331,7 @@ const CreateProfile = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

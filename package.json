@@ -25,6 +25,7 @@
     "react-flags-select": "^2.2.3",
     "react-icons": "^4.8.0",
     "react-loader-spinner": "^5.3.4",
+    "react-loading-skeleton": "^3.3.1",
     "react-router-dom": "^6.11.0",
     "react-scripts": "5.0.1",
     "react-select": "^5.7.2",
